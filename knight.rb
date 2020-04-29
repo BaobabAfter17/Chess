@@ -1,5 +1,5 @@
 require 'piece'
 
 class Knight
-    include 'Stepable'
+    include Stepable
 end

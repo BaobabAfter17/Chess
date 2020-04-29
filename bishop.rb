@@ -1,5 +1,5 @@
 require_relative 'piece'
 
-class Rook
-    include 'Slideable'
+class Bishop
+    include Slideable
 end

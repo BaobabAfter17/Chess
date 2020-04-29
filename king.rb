@@ -1,5 +1,5 @@
 require 'piece'
 
 class King
-    include 'Stepable'
+    include Stepable
 end
