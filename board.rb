@@ -34,6 +34,8 @@ class Board
         false   
     end
 
+    private
+
     def inspect
         board.map do |row|
             row.map {|ele| :P if ele.is_a?(Piece)}
