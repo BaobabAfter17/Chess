@@ -21,4 +21,22 @@ class Board
         row, col = pos
         @board[row][col] = val # board[row][col] = val should also work, but logically not right
     end
+
+    def move_piece(start_pos, end_pos)
+        raise "No piece at start position!!" if self[start_pos].nil?
+        raise "Cannot move to end position!!" if self.cannot_move
+        self[end_pos] = self[start_pos]
+        self[start_pos] = nil
+        self[end_pos]
+    end
+
+    def cannot_move
+        false   
+    end
+
+    def inspect
+        board.map do |row|
+            row.map {|ele| :P if ele.is_a?(Piece)}
+        end
+    end
 end
