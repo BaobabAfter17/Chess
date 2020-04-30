@@ -22,17 +22,13 @@ class Board
     end
 
     def move_piece(start_pos, end_pos)
-        raise "No piece at start position!!" if self[start_pos].nil?
-        raise "Cannot move to end position!!" if self.cannot_move
+        raise "No piece at start position!!" if self[start_pos] == NullPiece.instance
+        raise "Cannot move to end position!!" if !self[start_pos].moves.include?(end_pos)
         self[end_pos] = self[start_pos]
-        self[start_pos] = nil
-        self[end_pos]
+        self[start_pos] = NullPiece.instance
+        true
     end
 
-    def cannot_move
-        puts "cannot_move method not implemented"
-        false   
-    end
 
     def inspect
         board.map do |row|
