@@ -1,15 +1,13 @@
 require_relative 'piece'
+require_relative 'null_piece'
 
 class Board
 
     attr_reader :board
 
-    START_ROWS = [0, 1, 6, 7]
     def initialize
         @board = Array.new(8) {Array.new(8, nil)}
-        START_ROWS.each do |row_idx|
-            @board[row_idx].map! {Piece.new}
-        end
+        @board.map! {|row| row.map! {NullPiece.instance}}
     end
 
     def [](pos)
@@ -17,9 +15,10 @@ class Board
         board[row][col]
     end
 
-    def []=(pos, val)
+    def []=(pos, piece)
         row, col = pos
-        @board[row][col] = val # board[row][col] = val should also work, but logically not right
+        @board[row][col] = piece # board[row][col] = val should also work, but logically not right
+        piece.pos = pos
     end
 
     def move_piece(start_pos, end_pos)
@@ -35,11 +34,9 @@ class Board
         false   
     end
 
-    private
-
     def inspect
         board.map do |row|
-            row.map {|ele| :P if ele.is_a?(Piece)}
+            row.map {|ele| ele.symbol}
         end
     end
 end

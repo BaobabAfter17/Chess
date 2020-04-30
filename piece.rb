@@ -51,7 +51,7 @@ module Stepable
         self.move_diffs.each do |diff|
             dx, dy = diff
             pos = self.pos[0] + dx, self.pos[1] + dy
-            if self.valid_move?(pos)
+            if self.valid_move?(pos) && board[pos].color != self.color
                 moves << pos
             end
         end
@@ -60,13 +60,14 @@ module Stepable
 end
 
 class Piece
-    attr_reader :color, :board, :pos
+    attr_reader :color, :board
+    attr_accessor :pos
     def initialize(color, board, start_pos)
         @color = color
         @board = board
         @pos = start_pos
     end
-
+    
     protected
 
     def valid_move?(pos)

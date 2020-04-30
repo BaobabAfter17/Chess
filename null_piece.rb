@@ -2,7 +2,7 @@ require 'singleton'
 
 class NullPiece
     
-    inlcude Singleton
+    include Singleton
     attr_reader :color, :symbol
 
     def initialize
