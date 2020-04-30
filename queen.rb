@@ -4,7 +4,7 @@ class Queen < Piece
     include Slideable
 
     def initialize(color, board, start_pos)
-        @symbol = :R
+        @symbol = :Q
         super
     end
 

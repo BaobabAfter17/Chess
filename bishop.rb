@@ -4,7 +4,7 @@ class Bishop < Piece
     include Slideable
 
     def initialize(color, board, start_pos)
-        @symbol = :R
+        @symbol = :B
         super
     end
 

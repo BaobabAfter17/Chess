@@ -1,8 +1,8 @@
 require_relative 'board'
 
 module Slideable
-    HORIZONTAL_DIRS = [[-7, 0], [-6, 0], [-5, 0], [-4, 0], [-3, 0], [-2, 0], [-1, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [0, -7], [0, -6], [0, -5], [0, -4], [0, -3], [0, -2], [0, -1], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]
-    DIAGONAL_DIRS = [[-7, -7], [-6, -6], [-5, -5], [-4, -4], [-3, -3], [-2, -2], [-1, -1], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [7, -7], [6, -6], [5, -5], [4, -4], [3, -3], [2, -2], [1, -1], [-1, 1], [-2, 2], [-3, 3], [-4, 4], [-5, 5], [-6, 6], [-7, 7]]
+    HORIZONTAL_DIRS = [[-1, 0], [0, -1], [0, 1], [1, 0]]
+    DIAGONAL_DIRS = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
     def moves
         dirs = self.move_dirs
         moves = []
@@ -14,10 +14,33 @@ module Slideable
     protected
 
     def pick_moves_in(dirs)
-        start_row, start_col = self.pos
+        moves = []
+        dirs.each {|dir| moves += self.grow_unblocked_move_in(dir)}
+        moves
+    end
 
-        dirs.map {|delta| [start_row + delta[0], start_col + delta[1]]}
-            .select {|pos| self.valid_pos?(pos)}
+    def grow_unblocked_move_in(dir)
+        dx, dy = dir
+        start_x, start_y = self.pos
+        current_x, current_y = start_x + dx, start_y + dy
+        moves = []
+
+        while current_x.between?(0, 7) && current_y.between?(0, 7)
+            current_pos = [current_x, current_y]
+            current_piece = board[current_pos]
+            if current_piece == NullPiece.instance
+                moves << current_pos
+            elsif current_piece.color != self.color
+                moves << current_pos
+                break
+            else # same color pieces
+                break
+            end
+            current_x += dx
+            current_y += dy
+        end
+        
+        moves
     end
 
     
@@ -36,10 +59,4 @@ class Piece
         @pos = start_pos
     end
 
-    protected
-
-    def valid_pos?(pos)
-        row, col = pos
-        row.between?(0, 7) && col.between?(0, 7)
-    end
 end

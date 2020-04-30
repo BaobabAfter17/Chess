@@ -31,6 +31,7 @@ class Board
     end
 
     def cannot_move
+        puts "cannot_move method not implemented"
         false   
     end
 
