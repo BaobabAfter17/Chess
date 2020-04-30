@@ -22,11 +22,11 @@ module Slideable
     def grow_unblocked_move_in(dir)
         dx, dy = dir
         start_x, start_y = self.pos
-        current_x, current_y = start_x + dx, start_y + dy
+        current_pos = [start_x + dx, start_y + dy]
+
         moves = []
 
-        while current_x.between?(0, 7) && current_y.between?(0, 7)
-            current_pos = [current_x, current_y]
+        while self.valid_move(current_pos)
             current_piece = board[current_pos]
             if current_piece == NullPiece.instance
                 moves << current_pos
@@ -36,10 +36,9 @@ module Slideable
             else # same color pieces
                 break
             end
-            current_x += dx
-            current_y += dy
+            current_pos = [current_pos[0] + dx, current_pos[1] + dy]
         end
-        
+
         moves
     end
 
@@ -48,6 +47,15 @@ end
 
 module Stepable
     def moves
+        moves = []
+        self.move_diffs.each do |diff|
+            dx, dy = diff
+            pos = self.pos[0] + dx, self.pos[1] + dy
+            if self.valid_move(pos)
+                moves << pos
+            end
+        end
+        moves
     end
 end
 
@@ -57,6 +65,13 @@ class Piece
         @color = color
         @board = board
         @pos = start_pos
+    end
+
+    protected
+
+    def valid_move(pos)
+        x, y = pos
+        x.between?(0, 7) && y.between?(0, 7)
     end
 
 end
