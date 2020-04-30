@@ -26,7 +26,7 @@ module Slideable
 
         moves = []
 
-        while self.valid_move(current_pos)
+        while self.valid_move?(current_pos)
             current_piece = board[current_pos]
             if current_piece == NullPiece.instance
                 moves << current_pos
@@ -51,7 +51,7 @@ module Stepable
         self.move_diffs.each do |diff|
             dx, dy = diff
             pos = self.pos[0] + dx, self.pos[1] + dy
-            if self.valid_move(pos)
+            if self.valid_move?(pos)
                 moves << pos
             end
         end
@@ -69,7 +69,7 @@ class Piece
 
     protected
 
-    def valid_move(pos)
+    def valid_move?(pos)
         x, y = pos
         x.between?(0, 7) && y.between?(0, 7)
     end
